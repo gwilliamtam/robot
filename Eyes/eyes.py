@@ -37,7 +37,8 @@ class Eyes:
         self.look_dir = 'center'
         self.are_eyes_open = TRUE
         self.left_eye = Eye(self.face, Point(self.face.eye_center_to_side, self.face.eye_center_to_top))
-        self.right_eye = Eye(Point(self.face.face_width - self.face.eye_center_to_side, self.face.eye_center_to_top))
+        self.right_eye = Eye(self.face,
+                             Point(self.face.face_width - self.face.eye_center_to_side, self.face.eye_center_to_top))
         self.left_eye.show()
         self.right_eye.show()
 
@@ -315,17 +316,36 @@ class TimeEvent:
 
 class TextScreen:
     def __init__(self, face):
+        self.content = {}
         self.face = face
         self.text_bg_gap = 10
-        self.text_bg = Rectangle(Point(self.text_bg_gap, self.face.face_width + self.text_bg_gap),
+        self.text_bg = Rectangle(Point(self.text_bg_gap, self.face.face_height + self.text_bg_gap),
                                  Point(self.face.window_width - self.text_bg_gap, self.face.window_height - self.text_bg_gap))
-        self.text_bg.setFill(color_rgb(255, 255, 255))
+        self.text_bg.setFill(color_rgb(3, 30, 74))
+        self.text_bg.draw(self.face.win)
+        self.text_size = 30
+        self.text_starts_y = self.face.face_height + self.text_bg_gap + self.text_size
+        self.text_ends_y = self.face.window_height - self.text_bg_gap - self.text_size
+        print(str(self.text_ends_y))
 
-    def display(self, message):
-        self.text = Text(Point(getint(self.face.window_width / 2), self.face.window_height - 20), str(message))
-        self.text.setFill(color_rgb(0, 255, 0))
-        self.text.setSize(20)
-        self.text.draw()
+    def display(self, key, message):
+        for row_key in list(self.content.keys()):
+            print(str(self.content[row_key]))
+            if self.content[row_key].anchor.y > self.text_ends_y:
+                self.content[row_key].undraw()
+                del self.content[row_key]
+            else:
+                self.content[row_key].move(0, self.text_size)
+
+        self.content[key] = Text(Point(getint(self.face.window_width / 2), self.text_starts_y), str(message))
+        self.content[key].setFill(color_rgb(0, 255, 0))
+        self.content[key].setSize(self.text_size)
+        self.content[key].draw(self.face.win)
+
+    def remove(self, key):
+        if key in self.content:
+            self.content[key].undraw()
+            del self.content[key]
 
 
 def main():
@@ -335,7 +355,7 @@ def main():
 
     mouth = Mouth(face)
     eyes = Eyes(face)
-    text_area.display(host.ip)
+    text_area.display('ip', host.ip)
 
     mouth.small()
 
@@ -350,14 +370,18 @@ def main():
 
     blink_eyes = TimeEvent(7)
 
+    cnt = 0
     while TRUE:
         if ip_event.interval():
-            text.undraw()
+            text_area.remove('ip')
 
         if blink_eyes.interval():
             eyes.blink_eyes()
 
         if test_event.interval():
+            cnt = cnt + 1
+            text_area.display(str(cnt), str(cnt))
+
             option = random.randrange(15)
             if option == 1:
                 eyes.roll_eyes_left()
