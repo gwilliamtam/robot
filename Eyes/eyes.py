@@ -21,7 +21,7 @@ class Face:
         self.mouth_center_to_side = getint(self.face_width / 2)
 
         self.center = Point(self.face_width / 2, self.face_height / 2)
-        self.win = GraphWin("Bouncing Ball", self.window_width, self.window_height)
+        self.win = GraphWin("Robot", self.window_width, self.window_height)
         self. win.setBackground(color_rgb(0, 0, 0))
 
 
@@ -326,11 +326,9 @@ class TextScreen:
         self.text_size = 30
         self.text_starts_y = self.face.face_height + self.text_bg_gap + self.text_size
         self.text_ends_y = self.face.window_height - self.text_bg_gap - self.text_size
-        print(str(self.text_ends_y))
 
     def display(self, key, message):
         for row_key in list(self.content.keys()):
-            print(str(self.content[row_key]))
             if self.content[row_key].anchor.y > self.text_ends_y:
                 self.content[row_key].undraw()
                 del self.content[row_key]
@@ -346,66 +344,3 @@ class TextScreen:
         if key in self.content:
             self.content[key].undraw()
             del self.content[key]
-
-
-def main():
-    face = Face()
-    host = Host()
-    text_area = TextScreen(face)
-
-    mouth = Mouth(face)
-    eyes = Eyes(face)
-    text_area.display('ip', host.ip)
-
-    mouth.small()
-
-    ip_event = TimeEvent(60)
-    test_event = TimeEvent(1)
-    test_event.hold()
-
-    # eyes.look_down()
-    # test_event.hold()
-    # eyes.roll_eyes_left()
-    # test_event.hold()
-
-    blink_eyes = TimeEvent(7)
-
-    cnt = 0
-    while TRUE:
-        if ip_event.interval():
-            text_area.remove('ip')
-
-        if blink_eyes.interval():
-            eyes.blink_eyes()
-
-        if test_event.interval():
-            cnt = cnt + 1
-            text_area.display(str(cnt), str(cnt))
-
-            option = random.randrange(15)
-            if option == 1:
-                eyes.roll_eyes_left()
-            if option == 2:
-                eyes.look_left()
-            if option == 3:
-                eyes.look_right()
-            if option == 4:
-                eyes.look_center()
-            if option == 4:
-                eyes.look_up()
-            if option == 6:
-                eyes.look_down()
-
-            option = random.randrange(6)
-            if option == 1:
-                mouth.large()
-            if option == 2:
-                mouth.small()
-            if option == 3:
-                mouth.medium()
-
-    face.win.getMouse()
-    face.win.close()
-
-
-main()

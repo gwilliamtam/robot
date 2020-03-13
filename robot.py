@@ -60,3 +60,6 @@ def main():
 
     face.win.getMouse()
     face.win.close()
+
+
+main()
