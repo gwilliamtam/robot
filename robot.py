@@ -32,13 +32,14 @@ def main():
     blink_eyes = TimeEvent(7)
 
     while TRUE:
-        k = face.win.checkKey()
-        if k == 'Left':
-            print('left')
-        elif k == 'Right':
-            print('right')
-        elif k == 'period':
-            break
+        k = face.key()
+        if k != "":
+            if k == 'Left':
+                print('left')
+            elif k == 'Right':
+                print('right')
+            elif k == 'period':
+                break
         
         if ip_event.interval():
             text_area.remove('ip')

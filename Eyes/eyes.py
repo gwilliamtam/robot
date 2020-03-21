@@ -24,6 +24,9 @@ class Face:
         self.win = GraphWin("Willybot", self.window_width, self.window_height)
         self.win.setBackground(color_rgb(0, 0, 0))
 
+    def key(self):
+        return self.win.checkKey()
+
 
 class Host:
     def __init__(self):
