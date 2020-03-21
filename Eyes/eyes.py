@@ -22,7 +22,7 @@ class Face:
 
         self.center = Point(self.face_width / 2, self.face_height / 2)
         self.win = GraphWin("Willybot", self.window_width, self.window_height)
-        self. win.setBackground(color_rgb(0, 0, 0))
+        self.win.setBackground(color_rgb(0, 0, 0))
 
 
 class Host:

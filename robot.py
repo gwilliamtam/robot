@@ -10,8 +10,7 @@ import random
 import math
 import atexit
 
-
-def other():
+def MyGui():
     wheels = Wheels()
     face = Face()
     host = Host()
@@ -102,13 +101,10 @@ def other():
     face.win.getMouse()
     face.win.close()
 
+    atexit
+    atexit.register(wheels.turnOffMotors)
 
-#main()
 
-
-#at exit
-#atexit.register(wheels.turnOffMotors)
-    
 root = Tk()
 
 def key(event):
@@ -116,11 +112,12 @@ def key(event):
     
 def callback(event):
     frame.focus_set()
-    print("clicket at", event.x, event.y)
+    print("clicked at", event.x, event.y)
     
 frame = Frame(root, width=100, height=100)
 frame.bind("<Key>", key)
 frame.bind("<Button-1>", callback)
 frame.pack()
 
+my_gui = MyGui(root)
 root.mainloop()
