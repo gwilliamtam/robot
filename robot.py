@@ -10,7 +10,8 @@ import random
 import math
 import atexit
 
-def MyGui():
+
+def other():
     wheels = Wheels()
     face = Face()
     host = Host()
@@ -31,8 +32,13 @@ def MyGui():
     blink_eyes = TimeEvent(7)
 
     while TRUE:
-        if keyboard.is_pressed('q'):
-            print("Keypressed is q ")
+        k = face.win.checkKey()
+        if k == 'Left':
+            print('left')
+        elif k == 'Right':
+            print('right')
+        elif k == 'period':
+            break
         
         if ip_event.interval():
             text_area.remove('ip')
@@ -101,9 +107,12 @@ def MyGui():
     face.win.getMouse()
     face.win.close()
 
-    atexit
-    atexit.register(wheels.turnOffMotors)
 
+#main()
+
+
+#at exit
+#atexit.register(wheels.turnOffMotors)
 
 root = Tk()
 
@@ -119,5 +128,5 @@ frame.bind("<Key>", key)
 frame.bind("<Button-1>", callback)
 frame.pack()
 
-my_gui = MyGui(root)
 root.mainloop()
+    print("I am in a loop")
