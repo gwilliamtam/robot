@@ -8,20 +8,20 @@ import math
 
 class Face:
     def __init__(self):
-        self.window_width = 600
-        self.window_height = 1024
+        self.window_width = 1024
+        self.window_height = 600
 
-        self.face_width = 600
-        self.face_height = 600
+        self.face_width = 1024
+        self.face_height = 500
 
         self.eye_center_to_side = 160
         self.eye_center_to_top = 120
 
-        self.mouth_center_to_top = 350
+        self.mouth_center_to_top = 300
         self.mouth_center_to_side = getint(self.face_width / 2)
 
         self.center = Point(self.face_width / 2, self.face_height / 2)
-        self.win = GraphWin("Robot", self.window_width, self.window_height)
+        self.win = GraphWin("Willybot", self.window_width, self.window_height)
         self. win.setBackground(color_rgb(0, 0, 0))
 
 
@@ -323,7 +323,7 @@ class TextScreen:
                                  Point(self.face.window_width - self.text_bg_gap, self.face.window_height - self.text_bg_gap))
         self.text_bg.setFill(color_rgb(3, 30, 74))
         self.text_bg.draw(self.face.win)
-        self.text_size = 30
+        self.text_size = 20
         self.text_starts_y = self.face.face_height + self.text_bg_gap + self.text_size
         self.text_ends_y = self.face.window_height - self.text_bg_gap - self.text_size
 
