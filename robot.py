@@ -34,11 +34,17 @@ def main():
     while TRUE:
         k = face.key()
         if k != "":
-            if k == 'Left':
-                print('left')
+            print("Keypressed is ", k)
+            if k == 'Up':
+                wheels.advanceCar()
+            elif k == 'Left':
+                wheels.turnLeft()
             elif k == 'Right':
-                print('right')
-            elif k == 'period':
+                wheels.turnRight()
+            elif k == 'Down':
+                wheels.reverseCar()
+            elif k == 'Q':
+                wheels.turnOffMotors()
                 break
         
         if ip_event.interval():
@@ -47,63 +53,6 @@ def main():
         if blink_eyes.interval():
             eyes.blink_eyes()
 
-        if test_event.interval():
-            option = random.randrange(15)
-            if option == 1:
-                eyes.roll_eyes_left()
-            if option == 2:
-                eyes.look_left()
-            if option == 3:
-                eyes.look_right()
-            if option == 4:
-                eyes.look_center()
-            if option == 4:
-                eyes.look_up()
-            if option == 6:
-                eyes.look_down()
-
-            option = random.randrange(6)
-            if option == 1:
-                mouth.large()
-            if option == 2:
-                mouth.small()
-            if option == 3:
-                mouth.medium()
-
-            option = random.randrange(10)
-            if option == 1:
-                arms.right_arm.arm_up()
-                arms.left_arm.arm_up()
-            if option == 2:
-                arms.right_arm.arm_down()
-                arms.left_arm.arm_down()
-            if option == 3:
-                arms.right_arm.arm_up()
-                arms.left_arm.arm_down()
-            if option == 4:
-                arms.right_arm.arm_down()
-                arms.left_arm.arm_up()
-            if option == 5:
-                arms.right_arm.arm_middle()
-                arms.left_arm.arm_middle()
-                
-            option = random.randrange(10)
-            if option == 1:    
-                wheels.advanceCar()
-                time.sleep(1)
-                wheels.stopCar()
-            if option == 2:
-                wheels.turnLeft()
-                time.sleep(1)
-                wheels.stopCar()
-            if option == 3:
-                wheels.turnRight()
-                time.sleep(1)
-                wheels.stopCar()
-            if option == 4:
-                wheels.reverseCar()
-                time.sleep(1)
-                wheels.stopCar()
 
     face.win.getMouse()
     face.win.close()
