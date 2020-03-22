@@ -12,7 +12,7 @@ class Face:
         self.window_height = 600
 
         self.face_width = 1024
-        self.face_height = 500
+        self.face_height = 400
 
         self.eye_center_to_side = 160
         self.eye_center_to_top = 120
@@ -326,17 +326,21 @@ class TextScreen:
                                  Point(self.face.window_width - self.text_bg_gap, self.face.window_height - self.text_bg_gap))
         self.text_bg.setFill(color_rgb(3, 30, 74))
         self.text_bg.draw(self.face.win)
-        self.text_size = 20
+        self.text_size = 16
         self.text_starts_y = self.face.face_height + self.text_bg_gap + self.text_size
-        self.text_ends_y = self.face.window_height - self.text_bg_gap - self.text_size
+        self.text_ends_y = self.face.window_height - self.text_bg_gap
+        self.cnt = 0
 
-    def display(self, key, message):
+
+    def display(self, message):
+        self.cnt = self.cnt + 1
+        key = self.cnt
         for row_key in list(self.content.keys()):
             if self.content[row_key].anchor.y > self.text_ends_y:
                 self.content[row_key].undraw()
                 del self.content[row_key]
             else:
-                self.content[row_key].move(0, self.text_size)
+                self.content[row_key].move(0, self.text_size + 10)
 
         self.content[key] = Text(Point(getint(self.face.window_width / 2), self.text_starts_y), str(message))
         self.content[key].setFill(color_rgb(0, 255, 0))
