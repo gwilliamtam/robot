@@ -1,6 +1,6 @@
 from tkinter import TRUE
 from tkinter import FALSE
-
+from Eyes.eyes import TimeEvent
 
 class KeyboardControl:
     def __init__(self, car):
@@ -8,11 +8,37 @@ class KeyboardControl:
         self.in_loop = TRUE
         self.desplegables = ['Up', 'Down', 'Left', 'Right', 'Escape', 'Return']
         self.arms_action = ['a', 's', 'd', 'w', 'x']
+        self.my_time = TimeEvent(0.2)
+        
+        
+    def macro(self, list_macros = []):
+        for macro in list_macros:
+            if self.is_sleep(macro) == TRUE:
+                self.sleep(macro)
+            else:
+                self.handle(macro)
+            
+            
+    def is_sleep(self, macro):
+        if len(macro) > 6:
+            if macro[0:5] == 'sleep':
+                return TRUE
+        return FALSE
 
-    def handle(self, k = None):
-        if k is None:
+
+    def sleep(self, macro):
+        sleep_time = int(macro[6:])
+        self.car.text_area.display("Sleeping "
+            + str(self.my_time.get_time_interval() * sleep_time)
+            + " sec ("  + str(sleep_time) + ")")
+        for i in range(1, sleep_time):
+            self.my_time.hold()
+
+
+    def handle(self, k = ''):
+        if k == '':
             k = self.car.face.key()
-
+            
         if k != "":
             if k == 'Up':
                 self.car.wheels.advanceCar()
@@ -69,3 +95,5 @@ class KeyboardControl:
                 self.car.text_area.display("Keypressed: " + k)
             if k in self.arms_action:
                 self.car.text_area.display("Arms action")
+                
+        return self.in_loop

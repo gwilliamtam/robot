@@ -315,6 +315,9 @@ class TimeEvent:
     def hold(self):
         while self.interval() == FALSE:
             nothing = TRUE
+            
+    def get_time_interval(self):
+        return self.time_interval
 
 
 class TextScreen:

@@ -30,6 +30,7 @@ def main():
     test_event.hold()
 
     blink_eyes = TimeEvent(7)
+    macro_event = TimeEvent(5)
 
     car = Car(face, eyes, mouth, wheels, arms, text_area)
     key_control = KeyboardControl(car)
@@ -39,5 +40,8 @@ def main():
 
         if blink_eyes.interval():
             eyes.blink_eyes()
+            
+        if macro_event.interval():
+            key_control.macro(['2', 'Up', 'w', 'sleep 10', 'Return'])
 main()
 
