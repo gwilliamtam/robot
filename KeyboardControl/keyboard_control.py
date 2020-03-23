@@ -6,40 +6,64 @@ class KeyboardControl:
     def __init__(self, car):
         self.car = car
         self.in_loop = TRUE
-        self.desplegables = ['Up', 'Down', 'Left', 'Right', 'Escape', 'Return']
-        self.arms_action = ['a', 's', 'd', 'w', 'x']
-        self.my_time = TimeEvent(0.2)
+        self.keys_dict = {
+            'Up': 'Advance',
+            'Down': 'Reverse',
+            'Left': 'Rotate left',
+            'Right': 'Rotate right',
+            'Return': 'Stop',
+            'w': 'Arms up',
+            's': 'Arms middle',
+            'x': 'Arms down',
+            'a': 'Left down, right up',
+            'd': 'Right down, left up',
+            '1': 'Speed 1',
+            '2': 'Speed 2',
+            '3': 'Speed 3',
+            '4': 'Speed 4',
+            '5': 'Speed 5',
+            '6': 'Speed 6',
+            '7': 'Speed 7',
+            '8': 'Speed 8',
+            '9': 'Speed 9',
+            '0': 'Speed 10',
+            'm': 'Record macros (start/end)',
+            'n': 'Erase macros',
+            'r': 'Run macros',
+            'Escape': 'Terminate',
+            'h': 'Help'
+            }
+        self.macros_length = {
+            '1': 0.25,
+            '2': 0.5,
+            '3': 0.75,
+            '4': 1,
+            '5': 1.5,
+            '6': 2,
+            '7': 3,
+            '8': 4,
+            '9': 5,
+            '0': 10
+            }
+        self.macro_length = 0.25
+        self.my_time = TimeEvent(0.25)
+        self.macros = []
         
         
-    def macro(self, list_macros = []):
-        for macro in list_macros:
-            if self.is_sleep(macro) == TRUE:
-                self.sleep(macro)
-            else:
-                self.handle(macro)
-            
-            
-    def is_sleep(self, macro):
-        if len(macro) > 6:
-            if macro[0:5] == 'sleep':
-                return TRUE
-        return FALSE
-
-
-    def sleep(self, macro):
-        sleep_time = int(macro[6:])
-        self.car.text_area.display("Sleeping "
-            + str(self.my_time.get_time_interval() * sleep_time)
-            + " sec ("  + str(sleep_time) + ")")
-        for i in range(1, sleep_time):
-            self.my_time.hold()
-
+    def run_macros(self):
+        self.my_time = TimeEvent(self.macro_length)
+        for macro in self.macros:
+            self.handle(macro)
+            # prevent run macro for set speed
+            if macro < '0' or macro > '9':
+                self.my_time.hold()
 
     def handle(self, k = ''):
         if k == '':
             k = self.car.face.key()
             
-        if k != "":
+        if k in self.keys_dict:
+            self.car.text_area.display(self.keys_dict[k])
             if k == 'Up':
                 self.car.wheels.advanceCar()
                 self.car.eyes.look_down()
@@ -65,7 +89,6 @@ class KeyboardControl:
                 if speed_key == 0:
                     speed_key = 10
                 self.car.wheels.setSpeed(25*speed_key)
-                self.car.text_area.display("Speed: " + str(speed_key))
                 self.car.eyes.blink_eyes()
             elif k == 'w':
                 self.car.arms.left_arm.arm_up()
@@ -91,9 +114,60 @@ class KeyboardControl:
                 self.car.wheels.stopCar()
                 self.in_loop = FALSE
                 return self.in_loop
-            if k in self.desplegables:
-                self.car.text_area.display("Keypressed: " + k)
-            if k in self.arms_action:
-                self.car.text_area.display("Arms action")
+            elif k == 'm':
+                self.record_macros()
+            elif k == 'n':
+                self.erase_macros()
+            elif k == 'r':
+                self.run_macros()
+            elif k == 'h':
+                message = ''
+                cnt = 0
+                for key in self.keys_dict:
+                    cnt = cnt + 1
+                    message = message + key + '=' + self.keys_dict[key] + ' '
+                    if cnt >= 5:
+                        self.car.text_area.display(message)
+                        cnt = 0
+                        message = ''
+                if cnt > 0:
+                    self.car.text_area.display(message)
                 
         return self.in_loop
+    
+    def record_macros(self):
+        recording = TRUE
+        self.car.text_area.display("'Set Speed' macros are not affected by macro length duration")
+        message = ''
+        for key in self.macros_length:
+            message = message + key + '=' + str(self.macros_length[key]) + '  '
+        self.car.text_area.display(message + ' (seconds)')
+        self.my_time = TimeEvent(self.macro_length)
+        self.car.text_area.display("Set macro length:")
+        
+        self.macro_length = 0
+        while self.macro_length == 0:
+            k = self.car.face.key()
+            if k >= '0' and k <= '9':
+                self.macro_length = self.macros_length[k]
+        self.car.text_area.display("Macro length set to "
+            + str(self.macro_length) + " seconds")
+        
+        while recording == TRUE:
+            k = self.car.face.key()
+            if k == 'Escape':
+                k = ''
+            if k != '':
+                self.car.text_area.display(k)
+            if k in self.keys_dict:
+                if k == 'm':
+                    recording = FALSE
+                else:
+                    self.macros.append(k)
+                    self.car.text_area.display("+" + self.keys_dict[k])
+        self.car.text_area.display(str(len(self.macros)) + " macros stored")
+                    
+    def erase_macros(self):
+        self.macros = []
+        self.car.text_area.display("Macros erased")
+        

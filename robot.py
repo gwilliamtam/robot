@@ -41,7 +41,5 @@ def main():
         if blink_eyes.interval():
             eyes.blink_eyes()
             
-        if macro_event.interval():
-            key_control.macro(['2', 'Up', 'w', 'sleep 10', 'Return'])
 main()
 
