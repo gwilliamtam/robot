@@ -23,7 +23,7 @@ def main():
 
     mouth = Mouth(face)
     eyes = Eyes(face)
-    front_lights = Lights(7)
+    lights = Lights()
 
     mouth.small()
     wheels.setSpeed(150)
@@ -34,19 +34,19 @@ def main():
     blink_eyes = TimeEvent(7)
     macro_event = TimeEvent(5)
 
-    car = Car(face, eyes, mouth, wheels, arms, text_area)
+    car = Car(face, eyes, mouth, wheels, arms, text_area, lights)
     key_control = KeyboardControl(car)
     
     in_loop = TRUE
-    front_lights.turn_on()
+    car.lights.front.turn_on()
     while in_loop:
         in_loop = key_control.handle()
 
         if blink_eyes.interval():
-            eyes.blink_eyes()
+            car.eyes.blink_eyes()
 
-    front_lights.turn_off()
-    front_lights.clean()
+    car.lights.front.turn_off()
+    car.lights.clean()
      
      
 main()
