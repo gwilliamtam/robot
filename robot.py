@@ -1,6 +1,7 @@
 from tkinter import *
 from Eyes.eyes import *
 from Car.car import *
+from Lights.lights import *
 from KeyboardControl.keyboard_control import *
 from MotorHat.Raspi_PWM_Servo_Driver import PWM
 from MotorHat.Raspi_MotorHAT import Raspi_MotorHAT, Raspi_DCMotor
@@ -22,6 +23,7 @@ def main():
 
     mouth = Mouth(face)
     eyes = Eyes(face)
+    front_lights = Lights(7)
 
     mouth.small()
     wheels.setSpeed(150)
@@ -34,12 +36,18 @@ def main():
 
     car = Car(face, eyes, mouth, wheels, arms, text_area)
     key_control = KeyboardControl(car)
+    
     in_loop = TRUE
+    front_lights.turn_on()
     while in_loop:
         in_loop = key_control.handle()
 
         if blink_eyes.interval():
             eyes.blink_eyes()
-            
+
+    front_lights.turn_off()
+    front_lights.clean()
+     
+     
 main()
 
