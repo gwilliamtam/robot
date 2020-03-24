@@ -9,14 +9,14 @@ class Light:
         self.type = GPIO.OUT
         GPIO.setup(self.pin, self.type)
 
-        def turn_on(self):
-            GPIO.output(self.pin, GPIO.HIGH)
+    def turn_on(self):
+        GPIO.output(self.pin, GPIO.HIGH)
+            
+    def turn_off(self):
+        GPIO.output(self.pin, GPIO.LOW)
 
-        def turn_off(self):
-            GPIO.output(self.pin, GPIO.LOW)
-
-        def clean(self):
-            GPIO.cleanup()
+    def clean(self):
+        GPIO.cleanup()
 
 
 class Lights:
