@@ -3,6 +3,7 @@ from Eyes.eyes import *
 from Car.car import *
 from Lights.lights import *
 from Buzzer.buzzer import *
+from Distance.distance import *
 from KeyboardControl.keyboard_control import *
 from MotorHat.Raspi_PWM_Servo_Driver import PWM
 from MotorHat.Raspi_MotorHAT import Raspi_MotorHAT, Raspi_DCMotor
@@ -22,6 +23,7 @@ def main():
     arms = Arms()
     text_area = TextScreen(face)
     buzzer = Buzzer()
+    distance = Distance()
 
     mouth = Mouth(face)
     eyes = Eyes(face)
@@ -32,16 +34,20 @@ def main():
     ip_event = TimeEvent(60)
     test_event = TimeEvent(1)
     test_event.hold()
+    distance = TimeEvent(0.5)
 
     blink_eyes = TimeEvent(7)
     macro_event = TimeEvent(5)
 
-    car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer)
+    car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer, distance)
     key_control = KeyboardControl(car)
     
     in_loop = TRUE
     car.lights.front.turn_on()
     while in_loop:
+        if distance.interval():
+            print(str(distance.get()))
+
         in_loop = key_control.handle()
 
         if blink_eyes.interval():

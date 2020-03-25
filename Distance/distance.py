@@ -1,54 +1,38 @@
 import RPi.GPIO as GPIO
 import time
 
-# GPIO Mode (BOARD / BCM)
-GPIO.setmode(GPIO.BCM)
 
-# set GPIO Pins
-GPIO_TRIGGER = 14
-GPIO_ECHO = 15
+class Distance:
+    def __init__(self):
+        self.trigger_pin = 14
+        self.echo_pin = 15
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(self.trigger_pin, GPIO.OUT)
+        GPIO.setup(self.echo_pin , GPIO.IN)
 
-# set GPIO direction (IN / OUT)
-GPIO.setup(GPIO_TRIGGER, GPIO.OUT)
-GPIO.setup(GPIO_ECHO, GPIO.IN)
+    def get(self):
+        # set Trigger to HIGH
+        GPIO.output(self.trigger_pin, True)
 
+        # set Trigger after 0.01ms to LOW
+        time.sleep(0.00001)
+        GPIO.output(self.trigger_pin, False)
 
-def distance():
-    # set Trigger to HIGH
-    GPIO.output(GPIO_TRIGGER, True)
+        start_time = time.time()
+        stop_time = time.time()
 
-    # set Trigger after 0.01ms to LOW
-    time.sleep(0.00001)
-    GPIO.output(GPIO_TRIGGER, False)
+        # save StartTime
+        while GPIO.input(self.echo_pin) == 0:
+            start_time = time.time()
 
-    StartTime = time.time()
-    StopTime = time.time()
+        # save time of arrival
+        while GPIO.input(self.echo_pin) == 1:
+            stop_time = time.time()
 
-    # save StartTime
-    while GPIO.input(GPIO_ECHO) == 0:
-        StartTime = time.time()
+        # time difference between start and arrival
+        time_elapsed = stop_time - start_time
+        # multiply with the sonic speed (34300 cm/s)
+        # and divide by 2, because there and back
+        distance = (time_elapsed * 34300) / 2
 
-    # save time of arrival
-    while GPIO.input(GPIO_ECHO) == 1:
-        StopTime = time.time()
-
-    # time difference between start and arrival
-    TimeElapsed = StopTime - StartTime
-    # multiply with the sonic speed (34300 cm/s)
-    # and divide by 2, because there and back
-    distance = (TimeElapsed * 34300) / 2
-
-    return distance
-
-
-
-try:
-    while True:
-        dist = distance()
-        print("Measured Distance = %.1f cm" % dist)
-        time.sleep(1)
-
-    # Reset by pressing CTRL + C
-except KeyboardInterrupt:
-    print("Measurement stopped by User")
-    GPIO.cleanup()
+        return distance
