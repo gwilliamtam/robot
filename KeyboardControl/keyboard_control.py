@@ -64,6 +64,7 @@ class KeyboardControl:
             
         if k in self.keys_dict:
             self.car.text_area.display(self.keys_dict[k])
+            self.car.buzzer.play('click')
             if k == 'Up':
                 self.car.wheels.advanceCar()
                 self.car.eyes.look_down()
