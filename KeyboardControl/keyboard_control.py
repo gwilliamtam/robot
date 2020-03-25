@@ -12,6 +12,7 @@ class KeyboardControl:
             'Left': 'Rotate left',
             'Right': 'Rotate right',
             'Return': 'Stop',
+            'space': 'Horn',
             'w': 'Arms up',
             's': 'Arms middle',
             'x': 'Arms down',
@@ -61,7 +62,8 @@ class KeyboardControl:
     def handle(self, k = ''):
         if k == '':
             k = self.car.face.key()
-            
+        if k != '':
+            print(k)
         if k in self.keys_dict:
             self.car.text_area.display(self.keys_dict[k])
             self.car.buzzer.play('click')
@@ -85,6 +87,9 @@ class KeyboardControl:
                 self.car.wheels.stopCar()
                 self.car.eyes.look_center()
                 self.car.mouth.small()
+            elif k == 'space':
+                #self.car.buzzer.play('horn')
+                self.car.buzzer.random()
             elif k >= '0' and k <='9':
                 speed_key = int(k)
                 if speed_key == 0:

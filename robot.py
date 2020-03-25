@@ -21,7 +21,7 @@ def main():
     host = Host()
     arms = Arms()
     text_area = TextScreen(face)
-    buzzer = Buzz()
+    buzzer = Buzzer()
 
     mouth = Mouth(face)
     eyes = Eyes(face)
@@ -48,7 +48,7 @@ def main():
             car.eyes.blink_eyes()
 
     car.lights.front.turn_off()
-    car.lights.clean()
+    GPIO.cleanup()
      
      
 main()
