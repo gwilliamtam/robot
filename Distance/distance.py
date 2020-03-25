@@ -4,9 +4,9 @@ import time
 
 class Distance:
     def __init__(self):
-        self.trigger_pin = 14
-        self.echo_pin = 15
-        GPIO.setmode(GPIO.BCM)
+        self.trigger_pin = 8
+        self.echo_pin = 10
+        GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.trigger_pin, GPIO.OUT)
         GPIO.setup(self.echo_pin , GPIO.IN)
 

@@ -22,8 +22,8 @@ def main():
     host = Host()
     arms = Arms()
     text_area = TextScreen(face)
-    buzzer = Buzzer()
     distance = Distance()
+    buzzer = Buzzer()
 
     mouth = Mouth(face)
     eyes = Eyes(face)
@@ -34,7 +34,7 @@ def main():
     ip_event = TimeEvent(60)
     test_event = TimeEvent(1)
     test_event.hold()
-    distance = TimeEvent(0.5)
+    distance_event = TimeEvent(0.5)
 
     blink_eyes = TimeEvent(7)
     macro_event = TimeEvent(5)
@@ -45,7 +45,7 @@ def main():
     in_loop = TRUE
     car.lights.front.turn_on()
     while in_loop:
-        if distance.interval():
+        if distance_event.interval():
             print(str(distance.get()))
 
         in_loop = key_control.handle()
