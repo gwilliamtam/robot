@@ -10,11 +10,10 @@ p = GPIO.PWM(pin, 100)
 def Blink():
     #for x in range(0,4):
     GPIO.output(pin, True)
-    p.start(100)
-    sleep(1)
-    p.ChangeDutyCycle(45)
-    p.ChangeFrequency(2000)
-    sleep(3)
+    p.start(0)
+    p.ChangeFrequency(400)
+    p.ChangeDutyCycle(90)
+    sleep(0.1)
     p.stop()
     GPIO.cleanup()
     
