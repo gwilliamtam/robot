@@ -1,6 +1,7 @@
 from tkinter import TRUE
 from tkinter import FALSE
 from Eyes.eyes import TimeEvent
+from Obstacles.obstacles import *
 
 class KeyboardControl:
     def __init__(self, car):
@@ -49,12 +50,14 @@ class KeyboardControl:
         self.macro_length = 0.25
         self.my_time = TimeEvent(0.25)
         self.macros = []
+        self.obstacles = Obstacles()
         
         
     def run_macros(self):
         self.my_time = TimeEvent(self.macro_length)
         for macro in self.macros:
             self.handle(macro)
+            self.obstacles.check_move_forward(self.car.wheels, self.car.text_area, self.car.buzzer)
             # prevent run macro for set speed
             if macro < '0' or macro > '9':
                 self.my_time.hold()

@@ -19,7 +19,8 @@ class Buzzer:
         GPIO.output(self.pin, True)
         self.sounds = {
             "click": Buzz(400, 90, 0.05),
-            "horn": Buzz(800, 50, 0.5)
+            "horn": Buzz(800, 50, 0.5),
+            "error": Buzz(200, 90, 1)
         }
 
 

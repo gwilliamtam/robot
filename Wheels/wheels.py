@@ -7,6 +7,7 @@ class Wheels:
         self.mh = Raspi_MotorHAT(addr=0x6f)
         self.rightWheels = self.mh.getMotor(1)
         self.leftWheels = self.mh.getMotor(2)
+        self.status = 'stop'
 
     def turnOffMotors(self):
         print("EXIT: stop Car Movement!")
@@ -22,23 +23,31 @@ class Wheels:
         print("Advance")
         self.rightWheels.run(Raspi_MotorHAT.FORWARD)
         self.leftWheels.run(Raspi_MotorHAT.FORWARD)
+        self.status = 'forward'
 
     def reverseCar(self):
         print("Reverse")
         self.rightWheels.run(Raspi_MotorHAT.BACKWARD)
         self.leftWheels.run(Raspi_MotorHAT.BACKWARD)
+        self.status = 'reverse'
 
     def stopCar(self):
         print("Stop")
         self.rightWheels.run(Raspi_MotorHAT.RELEASE)
         self.leftWheels.run(Raspi_MotorHAT.RELEASE)
+        self.status = 'stop'
 
     def turnLeft(self):
         print("Left")
         self.rightWheels.run(Raspi_MotorHAT.FORWARD)
         self.leftWheels.run(Raspi_MotorHAT.BACKWARD)
+        self.status = 'left'
 
     def turnRight(self):
         print("Right")
         self.rightWheels.run(Raspi_MotorHAT.BACKWARD)
         self.leftWheels.run(Raspi_MotorHAT.FORWARD)
+        self.status = 'right'
+        
+    def status(self):
+        return self.status
