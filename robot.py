@@ -6,6 +6,7 @@ from Buzzer.buzzer import *
 from Distance.distance import *
 from Obstacles.obstacles import *
 from KeyboardControl.keyboard_control import *
+from LightDetector.light_detector import *
 from MotorHat.Raspi_PWM_Servo_Driver import PWM
 from MotorHat.Raspi_MotorHAT import Raspi_MotorHAT, Raspi_DCMotor
 from Arms.arms import *
@@ -30,12 +31,14 @@ def main():
     mouth = Mouth(face)
     eyes = Eyes(face)
     lights = Lights()
+    light_detector = LightDetector()
 
     mouth.small()
     wheels.setSpeed(75)
 
     blink_eyes = TimeEvent(7)
     macro_event = TimeEvent(5)
+    light_detect_event = TimeEvent(1)
 
     car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer)
     key_control = KeyboardControl(car)
@@ -45,7 +48,16 @@ def main():
     while in_loop:
         in_loop = key_control.handle()
         obstacles.check_move_forward(wheels, text_area, buzzer)
-
+        obstacles.check_proximity(wheels, buzzer)
+        
+        if light_detect_event.interval():
+            if light_detector.status() == 0:
+                eyes.right_eye.big_pupil()
+                eyes.left_eye.big_pupil()
+            else:
+                eyes.right_eye.normal_pupil()
+                eyes.left_eye.normal_pupil()
+            
         if blink_eyes.interval():
             car.eyes.blink_eyes()
 

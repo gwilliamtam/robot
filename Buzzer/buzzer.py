@@ -19,7 +19,7 @@ class Buzzer:
         GPIO.output(self.pin, True)
         self.sounds = {
             "click": Buzz(400, 90, 0.05),
-            "horn": Buzz(800, 50, 0.5),
+            "horn": Buzz(800, 50, 0.1),
             "error": Buzz(200, 90, 1)
         }
 
@@ -33,9 +33,12 @@ class Buzzer:
         
     def random(self):
         for x in range(0,30):
-            self.p.start(0)
-            self.p.ChangeFrequency(random.randrange(100,1200))
-            self.p.ChangeDutyCycle(random.randrange(10,90))
-            #sleep(random.randrange(1,10) * 0.1)
-            sleep(0.05)
+            self.random1()
+
+    def random1(self):
+        self.p.start(0)
+        self.p.ChangeFrequency(random.randrange(100,1200))
+        self.p.ChangeDutyCycle(random.randrange(10,90))
+        #sleep(random.randrange(1,10) * 0.1)
+        sleep(0.05)
         self.p.stop()

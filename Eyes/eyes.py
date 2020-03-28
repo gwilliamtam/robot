@@ -200,7 +200,9 @@ class Eye:
     def __init__(self, face, point):
         self.face = face
         self.iris_radius = 120
-        self.pupil_radius = 80
+        self.pupil_radius_normal = 80
+        self.pupil_radius_big = 100
+        self.pupil_radius = self.pupil_radius_normal
         self.center = point
 
         self.iris = Circle(point, self.iris_radius)
@@ -216,6 +218,22 @@ class Eye:
         self.iris.draw(self.face.win)
         self.pupil.draw(self.face.win)
         self.lid.draw(self.face.win)
+        
+    def redraw_pupil(self):
+        self.pupil.undraw()
+        self.pupil = Circle(self.center, self.pupil_radius);
+        self.pupil.setFill(color_rgb(0, 0, 0))
+        self.pupil.draw(self.face.win)
+        
+    def big_pupil(self):
+        if self.pupil_radius != self.pupil_radius_big:
+            self.pupil_radius = self.pupil_radius_big
+            self.redraw_pupil()
+        
+    def normal_pupil(self):
+        if self.pupil_radius != self.pupil_radius_normal:
+            self.pupil_radius = self.pupil_radius_normal
+            self.redraw_pupil()
 
     def move_pupil_left(self):
         dx = self.iris_radius - self.pupil_radius
