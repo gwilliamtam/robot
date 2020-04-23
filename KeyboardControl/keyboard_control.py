@@ -8,6 +8,7 @@ class KeyboardControl:
         self.car = car
         self.in_loop = TRUE
         self.keys_dict = {
+            'l': 'Lights',
             'Up': 'Advance',
             'Down': 'Reverse',
             'Left': 'Rotate left',
@@ -70,7 +71,12 @@ class KeyboardControl:
         if k in self.keys_dict:
             self.car.text_area.display(self.keys_dict[k])
             self.car.buzzer.play('click')
-            if k == 'Up':
+            if k == 'l':
+                if self.car.lights.front.lights_on == TRUE:
+                    self.car.lights.front.turn_off()
+                else:
+                    self.car.lights.front.turn_on()
+            elif k == 'Up':
                 self.car.wheels.advanceCar()
                 self.car.eyes.look_down()
                 self.car.mouth.large()

@@ -39,12 +39,15 @@ def main():
     blink_eyes = TimeEvent(7)
     macro_event = TimeEvent(5)
     light_detect_event = TimeEvent(1)
+    lights_event = TimeEvent(1)
 
     car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer)
     key_control = KeyboardControl(car)
     
     in_loop = TRUE
     car.lights.front.turn_on()
+    lights_event.hold()
+    car.lights.front.turn_off()
     while in_loop:
         in_loop = key_control.handle()
         obstacles.check_move_forward(wheels, text_area, buzzer)
