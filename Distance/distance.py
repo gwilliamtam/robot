@@ -6,6 +6,10 @@ class Distance:
     def __init__(self):
         self.trigger_pin = 8
         self.echo_pin = 10
+        # self.trigger_pin2 = 11
+        # self.echo_pin2 = 13
+        # self.trigger_pin3 = 15
+        # self.echo_pin3 = 18
         GPIO.setmode(GPIO.BOARD)
         GPIO.setup(self.trigger_pin, GPIO.OUT)
         GPIO.setup(self.echo_pin , GPIO.IN)
