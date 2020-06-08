@@ -11,6 +11,7 @@ from MotorHat.Raspi_PWM_Servo_Driver import PWM
 from MotorHat.Raspi_MotorHAT import Raspi_MotorHAT, Raspi_DCMotor
 from Arms.arms import *
 from Wheels.wheels import *
+from Camera.camera import *
 from datetime import datetime
 import socket
 import random
@@ -48,6 +49,9 @@ def main():
     car.lights.front.turn_on()
     lights_event.hold()
     car.lights.front.turn_off()
+    #camera = Camera()
+    #camera.shoot_and_show(car)
+    
     while in_loop:
         in_loop = key_control.handle()
         obstacles.check_move_forward(wheels, text_area, buzzer)

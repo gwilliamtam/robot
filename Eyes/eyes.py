@@ -5,7 +5,6 @@ import socket
 import random
 import math
 
-
 class Face:
     def __init__(self):
         self.window_width = 1024
