@@ -41,6 +41,7 @@ def main():
     macro_event = TimeEvent(5)
     light_detect_event = TimeEvent(1)
     lights_event = TimeEvent(1)
+    foto_event = TimeEvent(2.5)
     
     camera = Camera()
 
@@ -67,6 +68,9 @@ def main():
             
         if blink_eyes.interval():
             car.eyes.blink_eyes()
+
+        if foto_event.interval():
+            camera.shoot()
 
     car.lights.front.turn_off()
     GPIO.cleanup()
