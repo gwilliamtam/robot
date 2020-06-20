@@ -8,6 +8,7 @@ class KeyboardControl:
         self.car = car
         self.in_loop = TRUE
         self.keys_dict = {
+            'D': 'Danger Willy Williamson!',
             'l': 'Lights',
             'Up': 'Advance',
             'Down': 'Reverse',
@@ -20,6 +21,10 @@ class KeyboardControl:
             'x': 'Arms down',
             'a': 'Left down, right up',
             'd': 'Right down, left up',
+            'f': 'Camera Front',
+            'less': 'Camera Right',
+            'greater': 'Camera Left',
+            't': 'Take foto',
             '1': 'Speed 1',
             '2': 'Speed 2',
             '3': 'Speed 3',
@@ -68,6 +73,7 @@ class KeyboardControl:
             k = self.car.face.key()
         if k != '':
             print(k)
+            #self.car.text_area.display(k)
         if k in self.keys_dict:
             self.car.text_area.display(self.keys_dict[k])
             self.car.buzzer.play('click')
@@ -76,6 +82,8 @@ class KeyboardControl:
                     self.car.lights.front.turn_off()
                 else:
                     self.car.lights.front.turn_on()
+            elif k == 'D':
+                self.danger()
             elif k == 'Up':
                 self.car.wheels.advanceCar()
                 self.car.eyes.look_down()
@@ -125,6 +133,15 @@ class KeyboardControl:
                 self.car.arms.left_arm.arm_up()
                 self.car.arms.right_arm.arm_down()
                 self.car.eyes.roll_eyes_left()
+            elif k == 'f':
+                self.car.arms.camera_arm.arm_middle()
+            elif k == 'less':
+                self.car.arms.camera_arm.arm_up()
+            elif k == 'greater':
+                self.car.arms.camera_arm.arm_down()
+            elif k == 't':
+                self.car.camera.shoot()
+                #self.car.camera.show_foto(self.car.face)
             elif k == 'Escape':
                 self.car.wheels.stopCar()
                 self.in_loop = FALSE
@@ -150,6 +167,35 @@ class KeyboardControl:
                 
         return self.in_loop
     
+    def danger(self):
+        self.erase_macros()
+        self.macro_length = 0.1
+        
+        self.macros.append('0')
+        message = "Danger! Danger! Danger!"
+        for x in range(0,5):
+            self.macros.append('Left')
+            self.macros.append('l')
+            self.macros.append('w')
+            self.macros.append('l')
+            self.macros.append('a')
+            self.macros.append('l')
+            self.macros.append('x')
+            self.macros.append('l')
+            self.macros.append('Right')
+            self.macros.append('l')
+            self.macros.append('a')
+            self.macros.append('l')
+            self.macros.append('s')
+            self.macros.append('l')
+            self.macros.append('d')
+        
+        self.macros.append('Return')
+        
+        self.run_macros()
+        self.car.text_area.display(message)
+        self.erase_macros()
+    
     def record_macros(self):
         recording = TRUE
         self.car.text_area.display("'Set Speed' macros are not affected by macro length duration")
@@ -171,6 +217,8 @@ class KeyboardControl:
         while recording == TRUE:
             k = self.car.face.key()
             if k == 'Escape':
+                k = ''
+            if k == 'D':
                 k = ''
             if k != '':
                 self.car.text_area.display(k)

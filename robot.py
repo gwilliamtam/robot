@@ -41,16 +41,16 @@ def main():
     macro_event = TimeEvent(5)
     light_detect_event = TimeEvent(1)
     lights_event = TimeEvent(1)
+    
+    camera = Camera()
 
-    car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer)
+    car = Car(face, eyes, mouth, wheels, arms, text_area, lights, buzzer, camera)
     key_control = KeyboardControl(car)
     
     in_loop = TRUE
     car.lights.front.turn_on()
     lights_event.hold()
     car.lights.front.turn_off()
-    #camera = Camera()
-    #camera.shoot_and_show(car)
     
     while in_loop:
         in_loop = key_control.handle()

@@ -6,7 +6,7 @@ class Arms:
     def __init__(self):
         self.right_arm = Arm(0, 0)
         self.left_arm = Arm(1, 1)
-
+        self.camera_arm = Arm(14, 0)
 
 class Arm:
     def __init__(self, id, inverted):
