@@ -10,7 +10,7 @@
 </head>
 <body>
 <span id="time-stamp"></span>
-<img class='foto' src='shoot_and_show.gif' id="myImage">
+<img class='foto' src='shoot_and_show.gif' id="myImage" alt="If you see this message probably the robot stop broadcasting">
 <script>
     setInterval(function() {
         let timeStampElement = document.getElementById('time-stamp');
