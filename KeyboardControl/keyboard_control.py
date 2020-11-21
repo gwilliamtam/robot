@@ -5,9 +5,11 @@ from Obstacles.obstacles import *
 
 class KeyboardControl:
     def __init__(self, car):
+        self.command = '';
         self.car = car
         self.in_loop = TRUE
         self.keys_dict = {
+            ':': 'Enter your command and hit Enter',
             'D': 'Danger Willy Williamson!',
             'l': 'Lights',
             'Up': 'Advance',
@@ -77,7 +79,10 @@ class KeyboardControl:
         if k in self.keys_dict:
             self.car.text_area.display(self.keys_dict[k])
             self.car.buzzer.play('click')
-            if k == 'l':
+            if k == ':':
+                self.command = ":"
+                self.car.text_area.display(self.keys_dict[k])
+            elif k == 'l':
                 if self.car.lights.front.lights_on == TRUE:
                     self.car.lights.front.turn_off()
                 else:
